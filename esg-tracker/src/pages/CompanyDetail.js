@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import ESGScoreCard from "../components/ESGScoreCard";
 import NewsCard from "../components/NewsCard";
+import Sidebar from "../components/Sidebar";
+import LogoImage from "../images/Logo.png";
 
 import { Bar, Line } from "react-chartjs-2";
 import {
@@ -338,8 +340,26 @@ function CompanyDetail() {
   };
 
   if (loading) {
-    return <p style={{ color: "#fff", padding: "1rem" }}>Loading...</p>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "#1B1D1E",
+        }}
+      >
+        <img
+          src={LogoImage}
+          alt="Loading…"
+          className="spinner"
+          style={{ width: 150, height: 150 }}
+        />
+      </div>
+    );
   }
+  
   if (!company) {
     return (
       <div style={{ color: "#fff", padding: "1rem" }}>
@@ -365,11 +385,26 @@ function CompanyDetail() {
     sector === "Technology" ||
     sector === "Consumer Defensive";
 
-  return (
-    <div
-      style={{ backgroundColor: "#1B1D1E", minHeight: "100vh", color: "#fff" }}
-    >
-      <div style={{ maxWidth: "960px", margin: "0 auto", padding: "2rem" }}>
+    return (
+      <div
+        style={{
+          display: "flex",
+          backgroundColor: "#1B1D1E",
+          minHeight: "100vh",
+          color: "#fff",
+        }}
+      >
+        <Sidebar />
+    
+        <div
+          style={{
+            flex: 1,
+            maxWidth: "960px",
+            margin: "0 auto",
+            padding: "2rem",
+          }}
+        >
+
         {/* Company Name & Sector */}
         <h1
           style={{

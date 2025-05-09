@@ -3,12 +3,15 @@ import { Link } from "react-router-dom";
 import { supabase } from "../supabaseClient";
 import CompanyCard from "../components/CompanyCard";
 import ESGDefinitionCards from "../components/ESGDefinitionCards";
+import Sidebar from "../components/Sidebar";
+import LogoImage from "../images/Logo.png";
 import "font-awesome/css/font-awesome.min.css";
 
 function Home() {
   const [companies, setCompanies] = useState([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
+  const isMobile = window.innerWidth < 768;
 
   const fetchCompaniesData = useCallback(async () => {
     // List of tickers to include
@@ -110,8 +113,26 @@ function Home() {
   }, [fetchCompaniesData]);
 
   if (loading) {
-    return <p style={{ color: "#fff", padding: "1rem" }}>Loading...</p>;
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          height: "100vh",
+          backgroundColor: "#1B1D1E",
+        }}
+      >
+        <img
+          src={LogoImage}
+          alt="Loading…"
+          className="spinner"
+          style={{ width: 150, height: 150 }}
+        />
+      </div>
+    );
   }
+  
 
   // Filter companies by name based on the search term
   const filteredCompanies = companies.filter((c) =>
@@ -129,17 +150,24 @@ function Home() {
   });
 
   return (
-    <div
-      style={{ backgroundColor: "#1B1D1E", minHeight: "100vh", color: "#fff" }}
-    >
-      <div
-        style={{
-          width: "100%",
-          maxWidth: "960px",
-          margin: "0 auto",
-          padding: "1rem",
-        }}
-      >
+    <div style={{
+      display: "flex",
+      backgroundColor: "#1B1D1E",
+      minHeight: "100vh",
+      color: "#fff"
+    }}>
+      <Sidebar />
+  
+      <div style={{
+        flex: 1,
+        width: "100%",
+        maxWidth: "80vw",
+        margin: "0 auto",
+        padding: "1rem",
+        paddingTop: isMobile ? "6rem" : "1rem"
+      }}>
+
+        
         <ESGDefinitionCards />
 
         {/* Search Bar */}
@@ -162,26 +190,35 @@ function Home() {
             }}
           ></i>
           <input
+            className="searchInput"
             type="text"
-            placeholder="Search company by name"
+            placeholder="Search company"
             value={searchTerm}
-            onChange={(e) => setSearchTerm(e.target.value)}
+            onChange={e => setSearchTerm(e.target.value)}
             style={{
-              width: "94%",
+              width: isMobile ? "100%" : "73.3rem",
               padding: "1rem 1rem 1rem 2.5rem",
               borderRadius: "8px",
               border: "none",
               backgroundColor: "#232526",
               color: "#fff",
-              fontSize: "14px",
+              fontSize: "17px",
             }}
           />
         </div>
 
         {/* Render sectors with their companies */}
         {Object.entries(groupedBySector).map(([sectorName, comps]) => (
-          <div key={sectorName} style={{ marginBottom: "2rem" }}>
-            <h2 style={{ fontSize: "16px", marginBottom: "1rem" }}>
+        <div
+          id={
+            sectorName.toLowerCase().includes("consumer")
+              ? "Consumer"
+              : sectorName.replace(/\s+/g, "")
+          }
+          key={sectorName}
+          style={{ marginBottom: "2rem" }}
+        >
+            <h2 style={{ fontSize: "18px", marginBottom: "1rem" }}>
               Sector: {sectorName}
             </h2>
             <div

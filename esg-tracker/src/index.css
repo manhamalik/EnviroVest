@@ -3,6 +3,28 @@
 @tailwind utilities;
 
 body {
+  background-color: #1B1D1E;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
+.spinner {
+  animation: spin 3s linear infinite;
+  width: 100vw;
+  height: 100vw;
+}
+
+
+@layer base {
+  input::placeholder {
+    font-family: inherit; /* font ESGDefinitionCards is using */
+    color: #AAAAAD;
+  }
+}
+
+body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
